@@ -1,52 +1,79 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Lotto Wizard</title>
+<title>Lottery Picker</title>
+<style type="text/css">
+.a1{
+position:relative;
+font-family:Verdana;
+font-size:20px;
+color:#888888;
+}
+</style>
 
-<meta name="viewport" content="width=device-width, initial-scale=1"> 
-
-	<link rel="stylesheet" href="css/jquery.mobile-1.2.1.min.css" />
-	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
+<script language="JavaScript">
+var totalnumbers=12 //input total numbers to generate
+var lowerbound=1   //input lower bound for each random number
+var upperbound=24  //input upper bound for each random number
+function lotto(){
+B=' ';	
+LottoNumbers=new Array();	
+ for (i = 1; i <= totalnumbers; i++)
+ {
+ RandomNumber = Math.round(lowerbound+Math.random()*(upperbound-lowerbound));
+  for (j = 1; j <= totalnumbers; j)
+  {
+  if (RandomNumber == LottoNumbers[j])
+    {
+     RandomNumber=Math.round(lowerbound+Math.random()*(upperbound-lowerbound));
+     j=0;
+    }
+  j++;
+  }
+ LottoNumbers[i]=RandomNumber;
+ }
+LottoNumbers=LottoNumbers.toString();
+X=LottoNumbers.split(',');
+ for (i=0; i < X.length; i++)
+ {
+ X[i]=X[i]+' ';
+ if (X[i].length==2) 
+ X[i]='0'+X[i];
+ } 
+X=X.sort();	
+ for (i=0; i < X.length; i++)
+ {
+ OutPut=B+=X[i];
+ }
+if (document.all)document.all.layer1.innerHTML=OutPut;
+if (document.getElementById)document.getElementById("layer1").innerHTML=OutPut;
+if (document.layers){
+  document.layers.layer1.document.open();
+  document.layers.layer1.document.write("<span style='position:absolute;top:0px;left:0px;font-family:Verdana;font-size:20px;color:#888888;text-align:center'> "+OutPut+"</span>");
+  document.layers.layer1.document.close();
+  }
+  T=setTimeout('lotto()',20);
+//window.status=OutPut;
+}
+function StOp(){
+setTimeout('clearTimeout(T)',1000);
+}
+//-->
+</script>
 </head>
 
 <body>
-
-<!-- Start of first page -->
-<div data-role="page" id="foo">
-
-	<div data-role="header">
-		<h1>Texas Lottery Checker</h1>
-  </div><!-- /header -->
-
-	<div data-role="content">	
-		<p>I'm first in the source order so I'm shown as the page.</p>		
-		<p>View internal page called <a href="#bar">bar</a></p>	
-	</div><!-- /content -->
-
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div><!-- /footer -->
-</div><!-- /page -->
-
-
-<!-- Start of second page -->
-<div data-role="page" id="bar">
-
-	<div data-role="header">
-		<h1>Bar</h1>
-	</div><!-- /header -->
-
-	<div data-role="content">	
-		<p>I'm the second in the source order so I'm hidden when the page loads. I'm just shown if a link that references my id is beeing clicked.</p>		
-		<p><a href="#foo">Back to foo</a></p>	
-	</div><!-- /content -->
-
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div><!-- /footer -->
-</div><!-- /page -->
-
+<table border='0' width=250 height=50>
+<tr valign='middle'>
+<td align='center'>
+<form name=form>
+<input type=button value='Generate All or Nothing	' onClick="lotto();StOp()">
+</form>
+<span id=layer1 class=a1>Result</span>
+</td>
+</tr>
+</table>
 </body>
 </html>
